@@ -1,0 +1,60 @@
+package com.prac.quizgame;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+    Button btn;
+    TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btn = findViewById(R.id.add);
+        textView = findViewById(R.id.quiz);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Start the QuizActivity when the button is clicked
+                Intent intent = new Intent(MainActivity.this, Addition.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    public void subtractionQuiz(View view) {
+
+        // Start the QuizActivity when the button is clicked
+        Intent intent = new Intent(MainActivity.this, Subtraction.class);
+        startActivity(intent);
+
+    }
+
+    public void multiplicationQuiz(View view) {
+        // Start the QuizActivity when the button is clicked
+        Intent intent = new Intent(MainActivity.this, Multiplication.class);
+        startActivity(intent);
+    }
+
+    public void divisionQuiz(View view) {
+        // Start the QuizActivity when the button is clicked
+        Intent intent = new Intent(MainActivity.this, Division.class);
+        startActivity(intent);
+    }
+
+    public void mixQuiz(View view) {
+        // Start the QuizActivity when the button is clicked
+        Intent intent = new Intent(MainActivity.this, Mix.class);
+        startActivity(intent);
+    }
+
+}
