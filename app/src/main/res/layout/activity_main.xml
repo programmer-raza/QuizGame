@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     android:background="#B7F0CD"
+    android:gravity="center"
     tools:context=".MainActivity">
 
     <TextView
@@ -16,62 +15,75 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
         android:text="Quiz"
         android:textSize="45sp"
         android:textStyle="bold" />
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:columnCount="2"
-        android:orientation="vertical">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center"
+       android:layout_marginTop="16dp"
+       android:orientation="vertical"
+       android:id="@+id/gridviewlayoutholder"
+       >
+       <GridLayout
+           android:id="@+id/grid"
+           android:layout_marginBottom="100dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:alignmentMode="alignMargins"
+           android:columnCount="2"
+           android:padding="16dp"
+           android:rowOrderPreserved="false">
 
-        <Button
+           <Button
+               android:id="@+id/add"
+               android:layout_width="160dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:text="Addition"
+               android:textSize="16sp" />
 
-            android:id="@+id/add"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+           <Button
+               android:id="@+id/sub"
+               android:layout_width="160dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:onClick="subtractionQuiz"
+               android:text="Subtraction"
+               android:textSize="16sp" />
 
-            android:text="Addition"
-            android:textSize="24sp" />
+           <Button
+               android:id="@+id/product"
+               android:layout_width="160dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:onClick="multiplicationQuiz"
+               android:text="Multiplication"
+               android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/sub"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="subtractionQuiz"
-            android:text="Subtraction"
-            android:textSize="24sp" />
+           <Button
+               android:id="@+id/division"
+               android:layout_width="160dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:onClick="divisionQuiz"
+               android:text="Division"
+               android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/product"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="multiplicationQuiz"
-            android:text="Multiplication"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/division"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="divisionQuiz"
-            android:text="Division"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/mix"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="mixQuiz"
-            android:text="Random Quiz"
-            android:textSize="24sp" />
-    </GridLayout>
+           <Button
+               android:id="@+id/mix"
+               android:layout_width="340dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:layout_columnSpan="2"
+               android:onClick="mixQuiz"
+               android:text="Random Quiz"
+               android:textSize="16sp" />
+       </GridLayout>
+   </LinearLayout>
 
 </LinearLayout>
