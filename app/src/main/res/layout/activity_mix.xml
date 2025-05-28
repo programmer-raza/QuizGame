@@ -8,6 +8,40 @@
     android:orientation="vertical"
     tools:context=".Mix">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scoreandlifelinelayout"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"> <!-- Ensures both TextViews align vertically -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Score"
+            android:textSize="24sp"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:text="Score: 0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lifeline"
+            android:textSize="24sp"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:text="Life Lines: 5" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timertxt"
+        android:textSize="24sp"
+        android:gravity="center"
+        />
     <TextView
 
         android:layout_width="match_parent"
@@ -25,15 +59,46 @@
         android:text="Question"
         android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/answer"
-        android:layout_width="match_parent"
+    <GridLayout
+        android:id="@+id/optionslayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/question"
-        android:layout_marginTop="16dp"
-        android:hint="Enter your answer"
-        android:imeOptions="actionDone"
-        android:inputType="number" />
+        android:layout_margin="20dp"
+        android:columnCount="2"
+        android:padding="10dp"
+        android:rowCount="2">
+
+        <Button
+            android:id="@+id/option1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:onClick="option1AnswerCheck"
+            android:text="answer1" />
+
+        <Button
+            android:id="@+id/option2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="option2AnswerCheck"
+            android:text="answer2" />
+
+        <Button
+            android:id="@+id/option3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:onClick="option3AnswerCheck"
+            android:text="answer3" />
+
+        <Button
+            android:id="@+id/option4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="option4AnswerCheck"
+            android:text="answer4" />
+
+    </GridLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,11 +106,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit" />
 
         <Button
             android:id="@+id/backButton"

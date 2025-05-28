@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn;
+    Button addbtn;
     TextView textView;
 
     @Override
@@ -17,10 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn = findViewById(R.id.add);
+        addbtn = findViewById(R.id.add);
         textView = findViewById(R.id.quiz);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        addbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Start the QuizActivity when the button is clicked
@@ -56,5 +56,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Mix.class);
         startActivity(intent);
     }
+
+
 
 }

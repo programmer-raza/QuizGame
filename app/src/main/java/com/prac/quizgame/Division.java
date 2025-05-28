@@ -2,51 +2,125 @@ package com.prac.quizgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Division extends AppCompatActivity {
 
-    TextView questionTextView, answerview;
-    EditText answerEditText;
-    Button submitButton, backButton;
+    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt;
+    Button  backButton;
 
-    int num1, num2, correctAnswer;
+    int num1, num2, correctAnswer,score =0;
+    int TotallifeLine = 5;
+    private CountDownTimer countDownTimer;
+    private long timeLeftInMillis = 15000;
+
+    Button  option1, option2, option3, option4;
+    Random random;
+    ArrayList<Button> buttons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_division);
 
+        ScoreTxt = findViewById(R.id.Score);
+        lifeLine = findViewById(R.id.lifeline);
+        Timertext = findViewById(R.id.timertxt);
         questionTextView = findViewById(R.id.question);
         answerview = findViewById(R.id.answercheck);
-        answerEditText = findViewById(R.id.answer);
-        submitButton = findViewById(R.id.submit);
         backButton = findViewById(R.id.backButton); // Initialize the back button
 
-        generateQuestion();
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkAnswer();
-            }
-        });
+        buttons = new ArrayList<>();
+
+        option1 = findViewById(R.id.option1);
+        option2 = findViewById(R.id.option2);
+        option3 = findViewById(R.id.option3);
+        option4 = findViewById(R.id.option4);
+        random = new Random();
+
+        lifeLine.setText("Life Lines: "+TotallifeLine);
+        generateQuestion();
+        startTimer();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle the click event for the back button
-                navigateToMainActivity();
+               onQuitDialog();
             }
         });
+    }
+    public void onQuitDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Division.this);
+        alertDialog.setTitle("Quit Game")
+                .setMessage("Are you Sure you want to Quit ")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    if (countDownTimer != null) {
+                        countDownTimer.cancel(); // Ensure timer is canceled before showing dialog
+                    }
+                    finish();
+                })
+                .setNegativeButton("No",(dialog, which) -> {
+                })
+                .show();
+    }
+    public void option1AnswerCheck(View view) {
+        checkAnswer(option1);
+    }
+    public void option2AnswerCheck(View view) {
+        checkAnswer(option2);
+    }
+    public void option3AnswerCheck(View view) {
+        checkAnswer(option3);
+    }
+    public void option4AnswerCheck(View view) {
+        checkAnswer(option4);
+    }
+
+    public void assignCorretAnswer(String correctAns) {
+        buttons.add(option1);
+        buttons.add(option2);
+        buttons.add(option3);
+        buttons.add(option4);
+
+        // Generate a random number, either 1 or 2
+        int randomcorrectoption = random.nextInt(4) + 1;
+
+        switch (randomcorrectoption) {
+            case 1:
+                option1.setText(correctAns);
+                break;
+            case 2:
+                option2.setText(correctAns);
+                break;
+            case 3:
+                option3.setText(correctAns);
+                break;
+            case 4:
+                option4.setText(correctAns);
+                break;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int randomWrongOption = random.nextInt(50);
+            if (i != randomcorrectoption - 1) { // Adjusted the condition
+                buttons.get(i).setText(String.valueOf(randomWrongOption));
+            }
+        }
+
+
+
     }
 
     private void generateQuestion() {
@@ -59,45 +133,93 @@ public class Division extends AppCompatActivity {
         } while (num2 == 0);
 
         correctAnswer = num1 / num2;
-
+        assignCorretAnswer(Integer.toString(correctAnswer));
         String question = num1 + "/" + num2 + " = ?";
         questionTextView.setText(question);
     }
 
-    private void navigateToMainActivity() {
-        // Create an Intent to start the main activity
-        Intent intent = new Intent(this, MainActivity.class);
+    private void checkAnswer(Button optionbutton) {
+        int userAnswer = Integer.parseInt(optionbutton.getText().toString());
 
-        // Start the activity
-        startActivity(intent);
+        if (userAnswer == correctAnswer) {
+            answerview.setText("Correct!");
+            score++;
+            ScoreTxt.setText("Score: "+score);
+        } else {
+            answerview.setText("Wrong! The correct answer is " + correctAnswer);
+            TotallifeLine--;
+            lifeLine.setText("Life Lines: "+TotallifeLine);
 
-        // Finish the current activity
-        finish();
+            if(TotallifeLine==0){
+                GameOverDilog();
+                return;
+            }
+        }
+        generateQuestion();
+        resetTimer();
     }
+    private void resetTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stop the current timer
+        }
+        timeLeftInMillis = 15000;
+        startTimer(); // Restart the timer
+    }
+    public void GameOverDilog(){
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Ensure timer is canceled before showing dialog
+        }
 
-    private void checkAnswer() {
-        String userAnswerStr = answerEditText.getText().toString().trim();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Division.this);
+        alertDialog.setTitle("Game Over")
+                .setMessage("You Score: "+score)
+                .setCancelable(false) // Prevent closing the dialog without action
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    finish();
+                })
+                .setNegativeButton("retry",(dialog, which) -> {
+                    resetGame();
+                })
+                .show();
+    }
+    @Override
+    public void onBackPressed() {
+      onQuitDialog();
 
-        if (!userAnswerStr.isEmpty()) {
-            int userAnswer = Integer.parseInt(userAnswerStr);
+    }
+    private void resetGame() {
+        // Reset score and life lines
+        score = 0;
+        TotallifeLine = 5;
+        lifeLine.setText("Life Lines: " + TotallifeLine);
+        ScoreTxt.setText("Score: " + score);
 
-            if (userAnswer == correctAnswer) {
-                answerview.setText("Correct!");
-            } else {
+        // Generate a new question
+        generateQuestion();
 
-                answerview.setText("Wrong! The correct answer is " + correctAnswer);
+        // Reset the timer and start again
+        resetTimer();
+    }
+    private void startTimer() {
+        countDownTimer =  new CountDownTimer(timeLeftInMillis, 1000) { // 10 seconds, tick every second
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Timertext.setText("Time left: " + millisUntilFinished / 1000 + " seconds");
             }
 
-            // Generate a new question after checking the answer
-            generateQuestion();
-            // Clear the answer field for the next question
-            answerEditText.setText("");
-        } else {
-            showToast("Please enter an answer.");
-        }
-    }
+            @Override
+            public void onFinish() {
+                Timertext.setText("Time's up!");
+                GameOverDilog();
+            }
+        }.start();
 
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Cancel timer when the activity is destroyed
+        }
     }
 }
