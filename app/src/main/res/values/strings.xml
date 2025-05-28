@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Quiz Game</string>
+    <string name="subtraction">Subtraction</string>
+    <string name="addition">Addition</string>
+    <string name="multiplication">Multiplication</string>
+    <string name="division">Division</string>
+    <string name="random">Random</string>
 </resources>
