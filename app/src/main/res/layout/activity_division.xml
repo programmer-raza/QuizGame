@@ -90,14 +90,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:onClick="option1AnswerCheck"
-                android:text="answer1" />
+                 />
 
             <Button
                 android:id="@+id/option2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="option2AnswerCheck"
-                android:text="answer2" />
+                 />
 
             <Button
                 android:id="@+id/option3"
@@ -105,14 +105,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:onClick="option3AnswerCheck"
-                android:text="answer3" />
+                 />
 
             <Button
                 android:id="@+id/option4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="option4AnswerCheck"
-                android:text="answer4" />
+                 />
         </GridLayout>
 
         <TextView

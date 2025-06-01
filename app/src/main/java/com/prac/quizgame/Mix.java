@@ -170,7 +170,11 @@ public class Mix extends AppCompatActivity {
         }
 
         for (int i = 0; i < 4; i++) {
-            int randomWrongOption = random.nextInt(50);
+            int randomWrongOption =0;
+            do {
+                randomWrongOption= random.nextInt(50);
+            }
+            while(randomWrongOption == correctAnswer);
             if (i != randomcorrectoption - 1) { // Adjusted the condition
                 buttons.get(i).setText(String.valueOf(randomWrongOption));
             }
