@@ -58,7 +58,7 @@
             android:id="@+id/timertxt"
             android:background="#FA3A3A"
             android:textColor="@color/white"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:layout_marginBottom="26dp"
@@ -86,31 +86,45 @@
 
             <Button
                 android:id="@+id/option1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:textSize="24dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="20dp"
+                android:textColor="@color/black"
+                android:backgroundTint="#E1F2B0"
                 android:onClick="option1AnswerCheck"
                  />
 
             <Button
                 android:id="@+id/option2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:textSize="24dp"
+                android:layout_margin="20dp"
+                android:textColor="@color/black"
+                android:backgroundTint="#E1F2B0"
                 android:onClick="option2AnswerCheck"
                  />
 
             <Button
                 android:id="@+id/option3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="20dp"
+                android:textSize="24dp"
+                android:textColor="@color/black"
+                android:backgroundTint="#E1F2B0"
                 android:onClick="option3AnswerCheck"
                 />
 
             <Button
                 android:id="@+id/option4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="20dp"
+                android:textSize="24dp"
+                android:textColor="@color/black"
+                android:backgroundTint="#E1F2B0"
                 android:onClick="option4AnswerCheck"
                 />
         </GridLayout>
@@ -130,6 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back"
+        android:backgroundTint="#FA3A3A"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp" />

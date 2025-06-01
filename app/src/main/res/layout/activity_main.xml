@@ -41,6 +41,8 @@
 
            <Button
                android:id="@+id/add"
+               android:backgroundTint="#06D05E"
+               android:textColor="@color/black"
                android:layout_width="160dp"
                android:layout_height="60dp"
                android:layout_margin="8dp"
@@ -54,6 +56,8 @@
                android:layout_margin="8dp"
                android:onClick="subtractionQuiz"
                android:text="Subtraction"
+               android:backgroundTint="#06D05E"
+               android:textColor="@color/black"
                android:textSize="16sp" />
 
            <Button
@@ -61,6 +65,8 @@
                android:layout_width="160dp"
                android:layout_height="60dp"
                android:layout_margin="8dp"
+               android:backgroundTint="#06D05E"
+               android:textColor="@color/black"
                android:onClick="multiplicationQuiz"
                android:text="Multiplication"
                android:textSize="16sp" />
@@ -72,6 +78,8 @@
                android:layout_margin="8dp"
                android:onClick="divisionQuiz"
                android:text="Division"
+               android:backgroundTint="#06D05E"
+               android:textColor="@color/black"
                android:textSize="16sp" />
 
            <Button
@@ -81,6 +89,8 @@
                android:layout_margin="8dp"
                android:layout_columnSpan="2"
                android:onClick="mixQuiz"
+               android:backgroundTint="#06D05E"
+               android:textColor="@color/black"
                android:text="Random Quiz"
                android:textSize="16sp" />
        </GridLayout>
