@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -29,6 +30,8 @@ public class Multiplication extends AppCompatActivity {
     ArrayList<Button> buttons;
     Button  option1, option2, option3, option4;
     Random random;
+    private boolean isGameOver = false;
+
 
 
     @Override
@@ -120,8 +123,16 @@ public class Multiplication extends AppCompatActivity {
         String question = num1 + " * " + num2 + " = ?";
         questionTextView.setText(question);
     }
+    private void setButtonsEnabled(boolean enabled) {
+        option1.setEnabled(enabled);
+        option2.setEnabled(enabled);
+        option3.setEnabled(enabled);
+        option4.setEnabled(enabled);
+    }
 
     private void checkAnswer(Button optionbutton) {
+        if (isGameOver) return;
+
         int userAnswer = Integer.parseInt(optionbutton.getText().toString());
 
         if (userAnswer == correctAnswer) {
@@ -129,18 +140,23 @@ public class Multiplication extends AppCompatActivity {
             score++;
             ScoreTxt.setText("Score: "+score);
         } else {
-            answerview.setText("Wrong! The correct answer is " + correctAnswer);
             TotallifeLine--;
-            lifeLine.setText("Life Lines: "+TotallifeLine);
+            if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
+            lifeLine.setText("Life Lines: " + TotallifeLine);
 
-            if(TotallifeLine==0){
+            answerview.setText("Wrong! The correct answer is " + correctAnswer);
+
+            if (TotallifeLine == 0) {
+                countDownTimer.cancel();
                 GameOverDilog();
                 return;
             }
         }
+
         generateQuestion();
         resetTimer();
     }
+
 
     private void checkAnswer() {
         String userAnswerStr = answerEditText.getText().toString().trim();
@@ -186,19 +202,25 @@ public class Multiplication extends AppCompatActivity {
         timeLeftInMillis = 15000;
         startTimer(); // Restart the timer
     }
-    public void GameOverDilog(){
+    public void GameOverDilog() {
+        if (isGameOver) return;
+        isGameOver = true;
         if (countDownTimer != null) {
             countDownTimer.cancel(); // Ensure timer is canceled before showing dialog
         }
+        setButtonsEnabled(false);
+
+        saveHighScore(); // Save high score before showing dialog
+        int highScore = getHighScore();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Multiplication.this);
         alertDialog.setTitle("Game Over")
-                .setMessage("You Score: "+score)
-                .setCancelable(false) // Prevent closing the dialog without action
+                .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
+                .setCancelable(false)
                 .setPositiveButton("Ok", (dialog, which) -> {
                     finish();
                 })
-                .setNegativeButton("retry",(dialog, which) -> {
+                .setNegativeButton("Retry", (dialog, which) -> {
                     resetGame();
                 })
                 .show();
@@ -209,10 +231,28 @@ public class Multiplication extends AppCompatActivity {
       onQuitDialog();
 
     }
+
+
+    private void saveHighScore() {
+        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+        int highScore = prefs.getInt("HighScore", 0);
+        if (score > highScore) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("HighScore", score);
+            editor.apply();
+        }
+    }
+
+    private int getHighScore() {
+        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+        return prefs.getInt("HighScore", 0);
+    }
     private void resetGame() {
         // Reset score and life lines
         score = 0;
         TotallifeLine = 5;
+        isGameOver = false;
+        setButtonsEnabled(true);
         lifeLine.setText("Life Lines: " + TotallifeLine);
         ScoreTxt.setText("Score: " + score);
 
