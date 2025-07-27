@@ -44,14 +44,16 @@ public class Mix extends AppCompatActivity {
         questionTextView = findViewById(R.id.question);
         answerview = findViewById(R.id.answercheck);
         backButton = findViewById(R.id.backButton); // Initialize the back button
-
+        buttons = new ArrayList<>();
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
+        buttons.add(option1);
+        buttons.add(option2);
+        buttons.add(option3);
+        buttons.add(option4);
         random = new Random();
-
-        buttons = new ArrayList<>();
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
         generateQuestion();
@@ -149,49 +151,31 @@ public class Mix extends AppCompatActivity {
             default:
                 questionTextView.setText("No question");
         }
-        assignCorretAnswer(Integer.toString(correctAnswer));
+        assignCorrectAnswer(Integer.toString(correctAnswer));
         questionTextView.setText(question);
     }
 
     // Rest of the code...
-    public void assignCorretAnswer(String correctAns) {
-        buttons.add(option1);
-        buttons.add(option2);
-        buttons.add(option3);
-        buttons.add(option4);
+    public void assignCorrectAnswer(String correctAns) {
+        int correctIndex = random.nextInt(4);
+        buttons.get(correctIndex).setText(correctAns);
 
-        // Generate a random number, either 1 or 2
-        int randomcorrectoption = random.nextInt(4) + 1;
-
-        switch (randomcorrectoption) {
-            case 1:
-                option1.setText(correctAns);
-                break;
-            case 2:
-                option2.setText(correctAns);
-                break;
-            case 3:
-                option3.setText(correctAns);
-                break;
-            case 4:
-                option4.setText(correctAns);
-                break;
-        }
+        ArrayList<Integer> usedAnswers = new ArrayList<>();
+        usedAnswers.add(Integer.parseInt(correctAns));
 
         for (int i = 0; i < 4; i++) {
-            int randomWrongOption =0;
+            if (i == correctIndex) continue;
+
+            int wrongAnswer;
             do {
-                randomWrongOption= random.nextInt(50);
-            }
-            while(randomWrongOption == correctAnswer);
-            if (i != randomcorrectoption - 1) { // Adjusted the condition
-                buttons.get(i).setText(String.valueOf(randomWrongOption));
-            }
+                wrongAnswer = correctAnswer + random.nextInt(11) - 5; // ±5 range
+            } while (usedAnswers.contains(wrongAnswer));
+
+            usedAnswers.add(wrongAnswer);
+            buttons.get(i).setText(String.valueOf(wrongAnswer));
         }
-
-
-
     }
+
     private void setButtonsEnabled(boolean enabled) {
         option1.setEnabled(enabled);
         option2.setEnabled(enabled);

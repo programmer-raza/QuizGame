@@ -3,15 +3,12 @@ package com.prac.quizgame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,6 +48,10 @@ public class Division extends AppCompatActivity {
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
+        buttons.add(option1);
+        buttons.add(option2);
+        buttons.add(option3);
+        buttons.add(option4);
         random = new Random();
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
@@ -91,44 +92,26 @@ public class Division extends AppCompatActivity {
         checkAnswer(option4);
     }
 
-    public void assignCorretAnswer(String correctAns) {
-        buttons.add(option1);
-        buttons.add(option2);
-        buttons.add(option3);
-        buttons.add(option4);
+    public void assignCorrectAnswer(String correctAns) {
+        int correctIndex = random.nextInt(4);
+        buttons.get(correctIndex).setText(correctAns);
 
-        // Generate a random number, either 1 or 2
-        int randomcorrectoption = random.nextInt(4) + 1;
-
-        switch (randomcorrectoption) {
-            case 1:
-                option1.setText(correctAns);
-                break;
-            case 2:
-                option2.setText(correctAns);
-                break;
-            case 3:
-                option3.setText(correctAns);
-                break;
-            case 4:
-                option4.setText(correctAns);
-                break;
-        }
+        ArrayList<Integer> usedAnswers = new ArrayList<>();
+        usedAnswers.add(Integer.parseInt(correctAns));
 
         for (int i = 0; i < 4; i++) {
-            int randomWrongOption =0;
+            if (i == correctIndex) continue;
+
+            int wrongAnswer;
             do {
-             randomWrongOption= random.nextInt(50);
-         }
-            while(randomWrongOption == correctAnswer);
-            if (i != randomcorrectoption - 1) { // Adjusted the condition
-                buttons.get(i).setText(String.valueOf(randomWrongOption));
-            }
+                wrongAnswer = correctAnswer + random.nextInt(11) - 5; // ±5 range
+            } while (usedAnswers.contains(wrongAnswer));
+
+            usedAnswers.add(wrongAnswer);
+            buttons.get(i).setText(String.valueOf(wrongAnswer));
         }
-
-
-
     }
+
 
     private void generateQuestion() {
         Random random = new Random();
@@ -140,7 +123,7 @@ public class Division extends AppCompatActivity {
         } while (num2 == 0);
 
         correctAnswer = num1 / num2;
-        assignCorretAnswer(Integer.toString(correctAnswer));
+        assignCorrectAnswer(Integer.toString(correctAnswer));
         String question = num1 + "/" + num2 + " = ?";
         questionTextView.setText(question);
     }
