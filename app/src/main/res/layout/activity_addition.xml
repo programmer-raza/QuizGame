@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Score: 0"
+            android:text="@string/your_score"
             android:textSize="24sp" />
 
         <TextView
@@ -44,6 +44,14 @@
             android:text="Life Lines: 5"
             android:textSize="24sp" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/highscore"
+        android:id="@+id/highscoretxt"
+        android:textSize="24sp"
+         />
+
 
     <!-- Center: All quiz content -->
     <LinearLayout

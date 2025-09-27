@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Addition extends AppCompatActivity {
-    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt;
+    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt,highScore;
     Button backButton, option1, option2, option3, option4;
     ArrayList<Button> buttons;
     int num1, num2, correctAnswer,score =0;
     Random random;
     int TotallifeLine = 5;
+    SharedPreferences prefs;
     private boolean isGameOver = false;
 
     private CountDownTimer countDownTimer;
@@ -34,11 +35,17 @@ public class Addition extends AppCompatActivity {
         lifeLine = findViewById(R.id.lifeline);
         Timertext = findViewById(R.id.timertxt);
         answerview = findViewById(R.id.answercheck);
-        backButton = findViewById(R.id.backButton); // Initialize the back button
+        backButton = findViewById(R.id.backButton);
+        highScore = findViewById(R.id.highscoretxt);
+
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
+
+        prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+
+
         buttons = new ArrayList<>();
         random = new Random();
         buttons.add(option1);
@@ -50,6 +57,8 @@ public class Addition extends AppCompatActivity {
         lifeLine.setText("Life Lines: "+TotallifeLine);
         generateQuestion();
         startTimer();
+
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Addition",0));
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,18 +83,17 @@ public class Addition extends AppCompatActivity {
 
     }
     private void saveHighScore() {
-        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        int highScore = prefs.getInt("HighScore", 0);
+        int highScore = prefs.getInt("HighScore_Addition", 0);
         if (score > highScore) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("HighScore", score);
+            editor.putInt("HighScore_Addition", score);
             editor.apply();
         }
     }
 
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        return prefs.getInt("HighScore", 0);
+        return prefs.getInt("HighScore_Addition", 0);
     }
 
     private void generateQuestion() {
@@ -107,7 +115,7 @@ public class Addition extends AppCompatActivity {
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
             score++;
-            ScoreTxt.setText("Score: "+score);
+            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         } else {
             TotallifeLine--;
             if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
@@ -190,7 +198,7 @@ public class Addition extends AppCompatActivity {
         alertDialog.setTitle("Game Over")
                 .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
                 .setCancelable(false)
-                .setPositiveButton("Ok", (dialog, which) -> {
+                .setPositiveButton("Close", (dialog, which) -> {
                     finish();
                 })
                 .setNegativeButton("Retry", (dialog, which) -> {
@@ -232,12 +240,12 @@ public class Addition extends AppCompatActivity {
         isGameOver = false;
         setButtonsEnabled(true);
         lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText("Score: " + score);
+        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
 
-        // Generate a new question
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Addition",0));
+
         generateQuestion();
 
-        // Reset the timer and start again
         resetTimer();
     }
 

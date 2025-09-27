@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class Subtraction extends AppCompatActivity {
 
-    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt;
+    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt,highScore;
     Button backButton, option1, option2, option3, option4;
     ArrayList<Button> buttons;
     private boolean isGameOver = false;
@@ -28,6 +28,7 @@ public class Subtraction extends AppCompatActivity {
     int TotallifeLine = 5;
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis = 15000;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,16 @@ public class Subtraction extends AppCompatActivity {
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
         buttons = new ArrayList<>();
+        highScore = findViewById(R.id.highscoretxt);
+        prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
 
         buttons.add(option1);
         buttons.add(option2);
         buttons.add(option3);
         buttons.add(option4);
         random = new Random();
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Subtraction",0));
+
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
         generateQuestion();
@@ -83,7 +88,7 @@ public class Subtraction extends AppCompatActivity {
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
             score++;
-            ScoreTxt.setText("Score: "+score);
+            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         } else {
             TotallifeLine--;
             if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
@@ -166,18 +171,18 @@ public class Subtraction extends AppCompatActivity {
         startTimer(); // Restart the timer
     }
     private void saveHighScore() {
-        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        int highScore = prefs.getInt("HighScore", 0);
+
+        int highScore = prefs.getInt("HighScore_Subtraction", 0);
         if (score > highScore) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("HighScore", score);
+            editor.putInt("HighScore_Subtraction", score);
             editor.apply();
         }
     }
 
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        return prefs.getInt("HighScore", 0);
+        return prefs.getInt("HighScore_Subtraction", 0);
     }
 
     public void GameOverDilog() {
@@ -195,7 +200,7 @@ public class Subtraction extends AppCompatActivity {
         alertDialog.setTitle("Game Over")
                 .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
                 .setCancelable(false)
-                .setPositiveButton("Ok", (dialog, which) -> {
+                .setPositiveButton("Close", (dialog, which) -> {
                     finish();
                 })
                 .setNegativeButton("Retry", (dialog, which) -> {
@@ -220,10 +225,10 @@ public class Subtraction extends AppCompatActivity {
         score = 0;
         TotallifeLine = 5;
         lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText("Score: " + score);
+        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         isGameOver = false;
         setButtonsEnabled(true);
-
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Subtraction",0));
 
         // Generate a new question
         generateQuestion();
@@ -231,7 +236,6 @@ public class Subtraction extends AppCompatActivity {
         // Reset the timer and start again
         resetTimer();
     }
-
 
     public void onQuitDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Subtraction.this);

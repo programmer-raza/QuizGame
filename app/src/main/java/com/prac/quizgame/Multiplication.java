@@ -18,7 +18,7 @@ import java.util.Random;
 public class Multiplication extends AppCompatActivity {
 
 
-    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt;
+    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt,highScore;
     EditText answerEditText;
     Button  backButton;
 
@@ -30,6 +30,8 @@ public class Multiplication extends AppCompatActivity {
     Button  option1, option2, option3, option4;
     Random random;
     private boolean isGameOver = false;
+    SharedPreferences prefs ;
+
 
 
 
@@ -45,11 +47,16 @@ public class Multiplication extends AppCompatActivity {
         answerview = findViewById(R.id.answercheck);
         backButton = findViewById(R.id.backButton); // Initialize the back button
         buttons = new ArrayList<>();
+        highScore = findViewById(R.id.highscoretxt);
+        prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
 
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Multiplication",0));
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
+
+
         buttons.add(option1);
         buttons.add(option2);
         buttons.add(option3);
@@ -123,7 +130,7 @@ public class Multiplication extends AppCompatActivity {
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
             score++;
-            ScoreTxt.setText("Score: "+score);
+            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         } else {
             TotallifeLine--;
             if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
@@ -152,7 +159,7 @@ public class Multiplication extends AppCompatActivity {
             if (userAnswer == correctAnswer) {
                 answerview.setText("Correct!");
                 score++;
-                ScoreTxt.setText("Score: "+score);
+                ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
             } else {
 
                 answerview.setText("Wrong! The correct answer is " + correctAnswer);
@@ -202,7 +209,7 @@ public class Multiplication extends AppCompatActivity {
         alertDialog.setTitle("Game Over")
                 .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
                 .setCancelable(false)
-                .setPositiveButton("Ok", (dialog, which) -> {
+                .setPositiveButton("Close", (dialog, which) -> {
                     finish();
                 })
                 .setNegativeButton("Retry", (dialog, which) -> {
@@ -219,18 +226,18 @@ public class Multiplication extends AppCompatActivity {
 
 
     private void saveHighScore() {
-        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        int highScore = prefs.getInt("HighScore", 0);
+
+        int highScore = prefs.getInt("HighScore_Multiplication", 0);
         if (score > highScore) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("HighScore", score);
+            editor.putInt("HighScore_Multiplication", score);
             editor.apply();
         }
     }
 
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        return prefs.getInt("HighScore", 0);
+        return prefs.getInt("HighScore_Multiplication", 0);
     }
     private void resetGame() {
         // Reset score and life lines
@@ -239,7 +246,7 @@ public class Multiplication extends AppCompatActivity {
         isGameOver = false;
         setButtonsEnabled(true);
         lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText("Score: " + score);
+        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
 
         // Generate a new question
         generateQuestion();

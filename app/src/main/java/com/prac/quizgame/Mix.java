@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Mix extends AppCompatActivity {
-    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt;
+    TextView questionTextView, answerview,Timertext,lifeLine,ScoreTxt,highScore;
     Button  backButton; // Add a new button for going back
 
     String question;
@@ -31,6 +31,7 @@ public class Mix extends AppCompatActivity {
     private boolean isGameOver = false;
 
     ArrayList<Button> buttons;
+    SharedPreferences prefs;
 
 
     @Override
@@ -45,15 +46,21 @@ public class Mix extends AppCompatActivity {
         answerview = findViewById(R.id.answercheck);
         backButton = findViewById(R.id.backButton); // Initialize the back button
         buttons = new ArrayList<>();
+        highScore = findViewById(R.id.highscoretxt);
+        prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
+
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
+
         buttons.add(option1);
         buttons.add(option2);
         buttons.add(option3);
         buttons.add(option4);
         random = new Random();
+
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Division",0));
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
         generateQuestion();
@@ -87,7 +94,7 @@ public class Mix extends AppCompatActivity {
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
             score++;
-            ScoreTxt.setText("Score: "+score);
+            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         } else {
             TotallifeLine--;
             if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
@@ -205,7 +212,7 @@ public class Mix extends AppCompatActivity {
         alertDialog.setTitle("Game Over")
                 .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
                 .setCancelable(false)
-                .setPositiveButton("Ok", (dialog, which) -> {
+                .setPositiveButton("Close", (dialog, which) -> {
                     finish();
                 })
                 .setNegativeButton("Retry", (dialog, which) -> {
@@ -214,18 +221,17 @@ public class Mix extends AppCompatActivity {
                 .show();
     }
     private void saveHighScore() {
-        SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        int highScore = prefs.getInt("HighScore", 0);
+        int highScore = prefs.getInt("HighScore_Division", 0);
         if (score > highScore) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("HighScore", score);
+            editor.putInt("HighScore_Division", score);
             editor.apply();
         }
     }
 
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        return prefs.getInt("HighScore", 0);
+        return prefs.getInt("HighScore_Division", 0);
     }
     private void resetGame() {
         // Reset score and life lines
@@ -235,7 +241,7 @@ public class Mix extends AppCompatActivity {
         setButtonsEnabled(true);
 
         lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText("Score: " + score);
+        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
 
         // Generate a new question
         generateQuestion();

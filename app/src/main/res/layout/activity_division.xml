@@ -44,6 +44,14 @@
             android:text="Life Lines: 5"
             android:textSize="24sp" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/highscore"
+        android:id="@+id/highscoretxt"
+        android:textSize="24sp"
+        />
+
 
     <!-- Center: All quiz content -->
     <LinearLayout
