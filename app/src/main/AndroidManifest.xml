@@ -13,6 +13,9 @@
         android:theme="@style/Theme.QuizGame"
         tools:targetApi="31">
         <activity
+            android:name=".HighScore"
+            android:exported="false" />
+        <activity
             android:name=".Mix"
             android:exported="false" />
         <activity

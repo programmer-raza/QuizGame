@@ -60,7 +60,7 @@ public class Mix extends AppCompatActivity {
         buttons.add(option4);
         random = new Random();
 
-        highScore.setText("High Score: " +prefs.getInt("HighScore_Division",0));
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Mix",0));
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
         generateQuestion();
@@ -221,17 +221,17 @@ public class Mix extends AppCompatActivity {
                 .show();
     }
     private void saveHighScore() {
-        int highScore = prefs.getInt("HighScore_Division", 0);
+        int highScore = prefs.getInt("HighScore_Mix", 0);
         if (score > highScore) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("HighScore_Division", score);
+            editor.putInt("HighScore_Mix", score);
             editor.apply();
         }
     }
 
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
-        return prefs.getInt("HighScore_Division", 0);
+        return prefs.getInt("HighScore_Mix", 0);
     }
     private void resetGame() {
         // Reset score and life lines
@@ -242,6 +242,7 @@ public class Mix extends AppCompatActivity {
 
         lifeLine.setText("Life Lines: " + TotallifeLine);
         ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Mix",0));
 
         // Generate a new question
         generateQuestion();

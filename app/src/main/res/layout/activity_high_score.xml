@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HighScores">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:id="@+id/highscoresTxt"
+        android:textStyle="bold"
+        android:text="High Scores" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/scorelayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/highscoresTxt"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:id="@+id/scoreAddlayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreAddTxt"
+                android:textStyle="bold"
+                android:text="Addition :" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreadd"
+                android:textStyle="bold"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:id="@+id/scoreSublayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreSubTxt"
+                android:textStyle="bold"
+                android:text="Subtraction :" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoresub"
+                android:textStyle="bold"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:id="@+id/scoreMultlayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreMultTxt"
+                android:textStyle="bold"
+                android:text="Multiplication :" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoremult"
+                android:textStyle="bold"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:id="@+id/scoreDivlayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreDivTxt"
+                android:textStyle="bold"
+                android:text="Division :" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scorediv"
+                android:textStyle="bold"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:id="@+id/scoreMixlayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoreMixTxt"
+                android:textStyle="bold"
+                android:text="Random :" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
+                android:id="@+id/scoremix"
+                android:textStyle="bold"
+                android:text="" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

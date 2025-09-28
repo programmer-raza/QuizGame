@@ -248,6 +248,9 @@ public class Multiplication extends AppCompatActivity {
         lifeLine.setText("Life Lines: " + TotallifeLine);
         ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
 
+        highScore.setText("High Score: " +prefs.getInt("HighScore_Multiplication",0));
+
+
         // Generate a new question
         generateQuestion();
 

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    Button addbtn;
+    Button addbtn,highscore;
     TextView textView;
 
     @Override
@@ -19,6 +19,15 @@ public class MainActivity extends AppCompatActivity {
 
         addbtn = findViewById(R.id.add);
         textView = findViewById(R.id.quiz);
+        highscore =findViewById(R.id.highscores);
+
+        highscore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent highscoreintent = new Intent(MainActivity.this,HighScore.class);
+                startActivity(highscoreintent);
+            }
+        });
 
         addbtn.setOnClickListener(new View.OnClickListener() {
             @Override

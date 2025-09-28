@@ -7,4 +7,7 @@
     <string name="random">Random</string>
     <string name="highscore">HighScore: </string>
     <string name="your_score">Your Score:</string>
+    <string name="highscores">HighScores</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
