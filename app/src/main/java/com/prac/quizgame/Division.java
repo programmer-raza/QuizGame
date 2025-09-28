@@ -202,13 +202,13 @@ public class Division extends AppCompatActivity {
         int highScore = getHighScore();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Division.this);
-        alertDialog.setTitle("Game Over")
+        alertDialog.setTitle("Game Over, Time's up!")
                 .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
                 .setCancelable(false)
-                .setPositiveButton("Close", (dialog, which) -> {
+                .setPositiveButton("close", (dialog, which) -> {
                     finish();
                 })
-                .setNegativeButton("Retry", (dialog, which) -> {
+                .setNegativeButton("try again", (dialog, which) -> {
                     resetGame();
                 })
                 .show();
