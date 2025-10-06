@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    Button addbtn,highscore;
+    Button addbtn,highscore,appSettings;
     TextView textView;
 
     @Override
@@ -17,9 +18,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        appSettings = findViewById(R.id.settings);
         addbtn = findViewById(R.id.add);
         textView = findViewById(R.id.quiz);
         highscore =findViewById(R.id.highscores);
+
+        appSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "UNder Development", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         highscore.setOnClickListener(new View.OnClickListener() {
             @Override

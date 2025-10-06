@@ -19,9 +19,9 @@ public class Division extends AppCompatActivity {
     Button  backButton;
 
     int num1, num2, correctAnswer,score =0;
-    int TotallifeLine = 5;
+    int TotallifeLine = 3;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMillis = 15000;
+    private long timeLeftInMillis = 10000;
 
     Button  option1, option2, option3, option4;
     Random random;
@@ -123,11 +123,11 @@ public class Division extends AppCompatActivity {
 
     private void generateQuestion() {
         Random random = new Random();
-        num1 = random.nextInt(50); // Change the range as needed
+        num1 = random.nextInt(10); // Change the range as needed
 
         // Generate num2 until it is not zero
         do {
-            num2 = random.nextInt(50);
+            num2 = random.nextInt(10);
         } while (num2 == 0);
 
         correctAnswer = num1 / num2;
@@ -173,7 +173,7 @@ public class Division extends AppCompatActivity {
         if (countDownTimer != null) {
             countDownTimer.cancel(); // Stop the current timer
         }
-        timeLeftInMillis = 15000;
+        timeLeftInMillis = 10000;
         startTimer(); // Restart the timer
     }
     private void saveHighScore() {
@@ -221,7 +221,7 @@ public class Division extends AppCompatActivity {
     private void resetGame() {
         // Reset score and life lines
         score = 0;
-        TotallifeLine = 5;
+        TotallifeLine = 3;
         isGameOver = false;
         setButtonsEnabled(true);
 

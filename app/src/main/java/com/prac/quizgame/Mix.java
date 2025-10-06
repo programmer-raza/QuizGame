@@ -22,9 +22,9 @@ public class Mix extends AppCompatActivity {
 
     String question;
     int num1, num2, num, correctAnswer,score =0;
-    int TotallifeLine = 5;
+    int TotallifeLine = 3;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMillis = 15000;
+    private long timeLeftInMillis = 10000;
 
     Button  option1, option2, option3, option4;
     Random random;
@@ -127,8 +127,8 @@ public class Mix extends AppCompatActivity {
 
     private void generateQuestion() {
         Random random = new Random();
-        num1 = random.nextInt(50); // Change the range as needed
-        num2 = random.nextInt(50);
+        num1 = random.nextInt(10); // Change the range as needed
+        num2 = random.nextInt(10);
         num = random.nextInt(4);
 
         // Ensure num2 is not zero for division
@@ -194,7 +194,7 @@ public class Mix extends AppCompatActivity {
         if (countDownTimer != null) {
             countDownTimer.cancel(); // Stop the current timer
         }
-        timeLeftInMillis = 15000;
+        timeLeftInMillis = 10000;
         startTimer(); // Restart the timer
     }
     public void GameOverDilog() {
@@ -236,7 +236,7 @@ public class Mix extends AppCompatActivity {
     private void resetGame() {
         // Reset score and life lines
         score = 0;
-        TotallifeLine = 5;
+        TotallifeLine = 3;
         isGameOver = false;
         setButtonsEnabled(true);
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#B7F0CD"
-
+android:gravity="center"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:gravity="center"
-        android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:text="Quiz"
         android:textSize="45sp"
@@ -24,12 +23,10 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_gravity="center"
        android:layout_marginTop="16dp"
        android:orientation="vertical"
        android:background="@color/white"
-       android:id="@+id/gridviewlayoutholder"
-       >
+       android:id="@+id/gridviewlayoutholder">
        <GridLayout
            android:id="@+id/grid"
            android:layout_width="wrap_content"
@@ -103,6 +100,17 @@
                android:backgroundTint="#08E2B7"
                android:textColor="@color/black"
                android:text="@string/highscores"
+               android:textSize="16sp" />
+           <Button
+               android:id="@+id/settings"
+               android:layout_width="340dp"
+               android:layout_height="60dp"
+               android:layout_margin="8dp"
+               android:layout_columnSpan="2"
+               android:onClick="mixQuiz"
+               android:backgroundTint="#08E2B7"
+               android:textColor="@color/black"
+               android:text="@string/settings"
                android:textSize="16sp" />
 
        </GridLayout>

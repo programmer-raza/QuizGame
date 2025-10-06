@@ -23,9 +23,9 @@ public class Multiplication extends AppCompatActivity {
     Button  backButton;
 
     int num1, num2, correctAnswer,score =0;
-    int TotallifeLine = 5;
+    int TotallifeLine = 3;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMillis = 15000;
+    private long timeLeftInMillis = 10000;
     ArrayList<Button> buttons;
     Button  option1, option2, option3, option4;
     Random random;
@@ -108,8 +108,8 @@ public class Multiplication extends AppCompatActivity {
 
     private void generateQuestion() {
         Random random = new Random();
-        num1 = random.nextInt(50); // Change the range as needed
-        num2 = random.nextInt(50);
+        num1 = random.nextInt(10); // Change the range as needed
+        num2 = random.nextInt(10);
         correctAnswer = num1 * num2;
         assignCorrectAnswer(Integer.toString(correctAnswer));
         String question = num1 + " * " + num2 + " = ?";
@@ -189,10 +189,10 @@ public class Multiplication extends AppCompatActivity {
 
     private void resetTimer() {
         if (countDownTimer != null) {
-            countDownTimer.cancel(); // Stop the current timer
+            countDownTimer.cancel();
         }
-        timeLeftInMillis = 15000;
-        startTimer(); // Restart the timer
+        timeLeftInMillis = 10000;
+        startTimer();
     }
     public void GameOverDilog() {
         if (isGameOver) return;
@@ -242,7 +242,7 @@ public class Multiplication extends AppCompatActivity {
     private void resetGame() {
         // Reset score and life lines
         score = 0;
-        TotallifeLine = 5;
+        TotallifeLine = 3;
         isGameOver = false;
         setButtonsEnabled(true);
         lifeLine.setText("Life Lines: " + TotallifeLine);
@@ -272,7 +272,7 @@ public class Multiplication extends AppCompatActivity {
                 .show();
     }
     private void startTimer() {
-        countDownTimer =  new CountDownTimer(timeLeftInMillis, 1000) { // 10 seconds, tick every second
+        countDownTimer =  new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Timertext.setText("Time left: " + millisUntilFinished / 1000 + " seconds");

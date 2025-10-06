@@ -25,9 +25,9 @@ public class Subtraction extends AppCompatActivity {
 
     int num1, num2, correctAnswer,score =0;;
     Random random;
-    int TotallifeLine = 5;
+    int TotallifeLine = 3;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMillis = 15000;
+    private long timeLeftInMillis = 10000;
     SharedPreferences prefs;
 
     @Override
@@ -70,8 +70,8 @@ public class Subtraction extends AppCompatActivity {
     }
 
     private void generateQuestion() {
-        num1 = random.nextInt(50); // Change the range as needed
-        num2 = random.nextInt(50);
+        num1 = random.nextInt(10); // Change the range as needed
+        num2 = random.nextInt(10);
         correctAnswer = num1 - num2;
         assignCorrectAnswer(Integer.toString(correctAnswer));
 
@@ -167,7 +167,7 @@ public class Subtraction extends AppCompatActivity {
         if (countDownTimer != null) {
             countDownTimer.cancel(); // Stop the current timer
         }
-        timeLeftInMillis = 15000;
+        timeLeftInMillis = 10000;
         startTimer(); // Restart the timer
     }
     private void saveHighScore() {
@@ -223,7 +223,7 @@ public class Subtraction extends AppCompatActivity {
     private void resetGame() {
         // Reset score and life lines
         score = 0;
-        TotallifeLine = 5;
+        TotallifeLine = 3;
         lifeLine.setText("Life Lines: " + TotallifeLine);
         ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
         isGameOver = false;
