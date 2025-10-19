@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.prac.quizgame.viewmodel.AdditionViewModel;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,6 +28,7 @@ public class Addition extends AppCompatActivity {
 
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis = 10000;
+    private AdditionViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,9 @@ public class Addition extends AppCompatActivity {
 
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
+        viewModel = new ViewModelProvider(this).get(AdditionViewModel.class);
+
+        observeViewModel();
         generateQuestion();
         startTimer();
 
@@ -91,6 +98,20 @@ public class Addition extends AppCompatActivity {
         }
     }
 
+    private void observeViewModel() {
+        viewModel.score.observe(this, value ->
+                ScoreTxt.setText(getResources().getString(R.string.your_score) + value)
+        );
+
+        viewModel.lifeLine.observe(this, value ->
+                lifeLine.setText("Life Lines: " + value)
+        );
+
+        viewModel.highScore.observe(this, value ->
+                highScore.setText("High Score: " + value)
+        );
+    }
+
     private int getHighScore() {
         SharedPreferences prefs = getSharedPreferences("QuizPrefs", MODE_PRIVATE);
         return prefs.getInt("HighScore_Addition", 0);
@@ -114,16 +135,12 @@ public class Addition extends AppCompatActivity {
 
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
-            score++;
-            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
+            viewModel.increaseScore();
         } else {
-            TotallifeLine--;
-            if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
-            lifeLine.setText("Life Lines: " + TotallifeLine);
-
+            viewModel.decreaseLifeLine();
             answerview.setText("Wrong! The correct answer is " + correctAnswer);
 
-            if (TotallifeLine == 0) {
+            if (viewModel.lifeLine.getValue() <= 0) {
                 countDownTimer.cancel();
                 GameOverDilog();
                 return;
@@ -186,26 +203,27 @@ public class Addition extends AppCompatActivity {
     public void GameOverDilog() {
         if (isGameOver) return;
         isGameOver = true;
+
         if (countDownTimer != null) {
-            countDownTimer.cancel(); // Ensure timer is canceled before showing dialog
+            countDownTimer.cancel(); // stop timer before showing dialog
         }
+
         setButtonsEnabled(false);
 
-        saveHighScore(); // Save high score before showing dialog
-        int highScore = getHighScore();
+        // Save & get updated high score from ViewModel
+        viewModel.increaseScore(); // optional if you want to ensure final save
+        int highScoreValue = viewModel.highScore.getValue();
+        int currentScore = viewModel.score.getValue();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Addition.this);
         alertDialog.setTitle("Game Over, Time's up!")
-                .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
+                .setMessage("Your Score: " + currentScore + "\n\nHigh Score: " + highScoreValue)
                 .setCancelable(false)
-                .setPositiveButton("close", (dialog, which) -> {
-                    finish();
-                })
-                .setNegativeButton("try again", (dialog, which) -> {
-                    resetGame();
-                })
+                .setPositiveButton("Close", (dialog, which) -> finish())
+                .setNegativeButton("Try Again", (dialog, which) -> resetGame())
                 .show();
     }
+
 
 
     @Override
@@ -234,18 +252,10 @@ public class Addition extends AppCompatActivity {
             .show();
 }
     private void resetGame() {
-        // Reset score and life lines
-        score = 0;
-        TotallifeLine = 3;
+        viewModel.resetGame();
         isGameOver = false;
         setButtonsEnabled(true);
-        lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
-
-        highScore.setText("High Score: " +prefs.getInt("HighScore_Addition",0));
-
         generateQuestion();
-
         resetTimer();
     }
 

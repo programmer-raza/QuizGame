@@ -1,6 +1,7 @@
 package com.prac.quizgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -12,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.prac.quizgame.viewmodel.AdditionViewModel;
+import com.prac.quizgame.viewmodel.SubViewModel;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,6 +33,7 @@ public class Subtraction extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis = 10000;
     SharedPreferences prefs;
+    private SubViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class Subtraction extends AppCompatActivity {
         lifeLine = findViewById(R.id.lifeline);
         Timertext = findViewById(R.id.timertxt);
         answerview = findViewById(R.id.answercheck);
-        backButton = findViewById(R.id.backButton); // Initialize the back button
+        backButton = findViewById(R.id.backButton);
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
@@ -58,6 +63,9 @@ public class Subtraction extends AppCompatActivity {
 
 
         lifeLine.setText("Life Lines: "+TotallifeLine);
+        viewModel = new ViewModelProvider(this).get(SubViewModel.class);
+
+        observeViewModel();
         generateQuestion();
         startTimer();
 
@@ -68,7 +76,19 @@ public class Subtraction extends AppCompatActivity {
             }
         });
     }
+    private void observeViewModel() {
+        viewModel.score.observe(this, value ->
+                ScoreTxt.setText(getResources().getString(R.string.your_score) + value)
+        );
 
+        viewModel.lifeLine.observe(this, value ->
+                lifeLine.setText("Life Lines: " + value)
+        );
+
+        viewModel.highScore.observe(this, value ->
+                highScore.setText("High Score: " + value)
+        );
+    }
     private void generateQuestion() {
         num1 = random.nextInt(10); // Change the range as needed
         num2 = random.nextInt(10);
@@ -87,16 +107,12 @@ public class Subtraction extends AppCompatActivity {
 
         if (userAnswer == correctAnswer) {
             answerview.setText("Correct!");
-            score++;
-            ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
+            viewModel.increaseScore();
         } else {
-            TotallifeLine--;
-            if (TotallifeLine < 0) TotallifeLine = 0; // prevent -1
-            lifeLine.setText("Life Lines: " + TotallifeLine);
-
+            viewModel.decreaseLifeLine();
             answerview.setText("Wrong! The correct answer is " + correctAnswer);
 
-            if (TotallifeLine == 0) {
+            if (viewModel.lifeLine.getValue() <= 0) {
                 countDownTimer.cancel();
                 GameOverDilog();
                 return;
@@ -188,26 +204,27 @@ public class Subtraction extends AppCompatActivity {
     public void GameOverDilog() {
         if (isGameOver) return;
         isGameOver = true;
+
         if (countDownTimer != null) {
-            countDownTimer.cancel(); // Ensure timer is canceled before showing dialog
+            countDownTimer.cancel(); // stop timer before showing dialog
         }
+
         setButtonsEnabled(false);
 
-        saveHighScore(); // Save high score before showing dialog
-        int highScore = getHighScore();
+        // Save & get updated high score from ViewModel
+        viewModel.increaseScore(); // optional if you want to ensure final save
+        int highScoreValue = viewModel.highScore.getValue();
+        int currentScore = viewModel.score.getValue();
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Subtraction.this);
         alertDialog.setTitle("Game Over, Time's up!")
-                .setMessage("Your Score: " + score + "\n\nHigh Score: " + highScore)
+                .setMessage("Your Score: " + currentScore + "\n\nHigh Score: " + highScoreValue)
                 .setCancelable(false)
-                .setPositiveButton("close", (dialog, which) -> {
-                    finish();
-                })
-                .setNegativeButton("try again", (dialog, which) -> {
-                    resetGame();
-                })
+                .setPositiveButton("Close", (dialog, which) -> finish())
+                .setNegativeButton("Try Again", (dialog, which) -> resetGame())
                 .show();
     }
+
     @Override
     public void onBackPressed() {
        onQuitDialog();
@@ -221,19 +238,10 @@ public class Subtraction extends AppCompatActivity {
         }
     }
     private void resetGame() {
-        // Reset score and life lines
-        score = 0;
-        TotallifeLine = 3;
-        lifeLine.setText("Life Lines: " + TotallifeLine);
-        ScoreTxt.setText(getResources().getString(R.string.your_score)+score);
+        viewModel.resetGame();
         isGameOver = false;
         setButtonsEnabled(true);
-        highScore.setText("High Score: " +prefs.getInt("HighScore_Subtraction",0));
-
-        // Generate a new question
         generateQuestion();
-
-        // Reset the timer and start again
         resetTimer();
     }
 
@@ -251,4 +259,5 @@ public class Subtraction extends AppCompatActivity {
                 })
                 .show();
     }
+
 }
